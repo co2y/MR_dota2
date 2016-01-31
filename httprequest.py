@@ -12,7 +12,6 @@ apikey = open('D2_API_KEY', 'r').read().strip()
 
 stopseqnum = 2115522031 # stop at this index
 
-
 def accessMatchHistory(lastseqnum):
     succeed = False
     while not succeed:
