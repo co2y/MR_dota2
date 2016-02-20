@@ -1,5 +1,7 @@
 # python 3
 import urllib.request
+from lib_socks_proxy_2013_10_03 import monkey_patch as socks_proxy_monkey_patch
+from lib_socks_proxy_2013_10_03 import socks_proxy_context
 # python 2.7
 #import urllib2
 import json
@@ -12,12 +14,19 @@ apikey = open('D2_API_KEY', 'r').read().strip()
 
 stopseqnum = 2115522031 # stop at this index
 
+socks_proxy_monkey_patch.monkey_patch()
+opener = urllib.request.build_opener()
+
 def accessMatchHistory(lastseqnum):
     succeed = False
     while not succeed:
         try:
-            matchHist = json.loads(urllib.request.urlopen("https://api.steampowered.com/IDOTA2Match_570/GetMatchHistoryBySequenceNum/V001/?key=" + apikey + "&start_at_match_seq_num=" + str(lastseqnum)).read().decode("utf-8"))
-            succeed = True
+            with socks_proxy_context.socks_proxy_context(proxy_address=('127.0.0.1', 1080)):
+                res = opener.open("https://api.steampowered.com/IDOTA2Match_570/GetMatchHistoryBySequenceNum/V001/?key=" + apikey + "&start_at_match_seq_num=" + str(lastseqnum))
+                matchHist = json.loads(res.read().decode('utf-8'))
+                succeed = True
+            # matchHist = json.loads(urllib.request.urlopen("https://api.steampowered.com/IDOTA2Match_570/GetMatchHistoryBySequenceNum/V001/?key=" + apikey + "&start_at_match_seq_num=" + str(lastseqnum)).read().decode("utf-8"))
+            # succeed = True
         except urllib.error.HTTPError:
             print("WOAH")
             time.sleep(30)
