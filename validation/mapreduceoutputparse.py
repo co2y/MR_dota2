@@ -6,7 +6,7 @@ from networkx.readwrite import json_graph
 
 total = 0
 
-f = open('output.txt', 'r')
+f = open('output-1', 'r')
 # first pass: build solo hero winrates
 heropickcount = np.zeros(114)
 herowincount = np.zeros(114)
@@ -25,7 +25,7 @@ while True:
         heropickcount[i] += int(pickcount)
         herowincount[i] += int(wincount)
 
-f = open('output.txt', 'r')
+f = open('output-1', 'r')
 popularitygraph = nx.Graph()
 winrategraph = nx.Graph()
 while True:
@@ -46,6 +46,6 @@ while True:
     winrategraph.add_edge(*hf.getHero(nodes), weight=(winrate - winratetarget))
 
 d = json_graph.node_link_data(popularitygraph)
-json.dump(d, open('popularitygraph.json','w'))
+json.dump(d, open('popularitygraph-1.json','w'))
 d = json_graph.node_link_data(winrategraph)
-json.dump(d, open('winrategraph.json', 'w'))
+json.dump(d, open('winrategraph-1.json', 'w'))

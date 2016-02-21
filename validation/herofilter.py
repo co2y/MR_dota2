@@ -1,7 +1,7 @@
 import json
 herojson = open('herolookup.json','r').read()
 herojson = json.loads(herojson)['result']['heroes']
-herolist = [""] * 113
+herolist = [""] * 114
 for hero in herojson:
     herolist[hero['id']] = hero['localized_name']
 def getHero(indices, offset=0):
